@@ -35,7 +35,9 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.util.ReflectionUtils;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.common.annotations.VisibleForTesting;
@@ -51,6 +53,11 @@ import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
 
 import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.context.request.WebRequest;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * Dispatcher for LINE Message Event Handling.
@@ -166,8 +173,12 @@ public class LineMessageHandlerSupport {
         int priority;
     }
 
-    @PostMapping("${line.bot.handler.path:/callback}")
-    public void callback(@LineBotMessages List<Event> events) {
+//    @PostMapping("${line.bot.handler.path:/callback}")
+    @PostMapping("/{branchCode}/callback")
+    public void callback(@PathVariable String branchCode, @LineBotMessages List<Event> events) {
+
+        RequestContextHolder.currentRequestAttributes().setAttribute("branchCode", branchCode, WebRequest.SCOPE_REQUEST);
+
         events.forEach(this::dispatch);
     }
 

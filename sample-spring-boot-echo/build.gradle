@@ -21,4 +21,7 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter-web"
 
     testImplementation "org.springframework.boot:spring-boot-starter-test"
+
+// https://mvnrepository.com/artifact/org.ehcache/ehcache
+    compile group: 'org.ehcache', name: 'ehcache', version: '3.6.1'
 }

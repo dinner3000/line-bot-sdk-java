@@ -16,8 +16,17 @@
 
 package com.example.bot.spring.echo;
 
+import com.linecorp.bot.model.action.Action;
+import com.linecorp.bot.model.action.URIAction;
+import com.linecorp.bot.model.event.FollowEvent;
+import com.linecorp.bot.model.event.UnfollowEvent;
+import com.linecorp.bot.model.message.TemplateMessage;
+import com.linecorp.bot.model.message.flex.component.Button;
+import com.linecorp.bot.model.message.template.ButtonsTemplate;
+import com.linecorp.bot.model.message.template.Template;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -28,21 +37,72 @@ import com.linecorp.bot.model.message.Message;
 import com.linecorp.bot.model.message.TextMessage;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.util.UriBuilder;
+
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
 
 @SpringBootApplication
 @LineMessageHandler
 public class EchoApplication {
-    private final Logger log = LoggerFactory.getLogger(EchoApplication.class);
 
     public static void main(String[] args) {
         SpringApplication.run(EchoApplication.class, args);
     }
 
+    private final Logger log = LoggerFactory.getLogger(EchoApplication.class);
+
+    private final SnowFlakeUIDGenerator snowFlakeUIDGenerator;
+
+    private final NewFollowerTemporaryStorage newFollowerTemporaryStorage;
+
+    public EchoApplication(SnowFlakeUIDGenerator snowFlakeUIDGenerator, NewFollowerTemporaryStorage newFollowerTemporaryStorage) {
+        this.snowFlakeUIDGenerator = snowFlakeUIDGenerator;
+        this.newFollowerTemporaryStorage = newFollowerTemporaryStorage;
+    }
+
     @EventMapping
-    public Message handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
+    public Message handleTextMessageEvent(MessageEvent<TextMessageContent> event) throws URISyntaxException {
         log.info("event: " + event);
-        final String originalMessageText = event.getMessage().getText();
-        return new TextMessage(originalMessageText);
+//        final String originalMessageText = event.getMessage().getText();
+//        return new TextMessage(originalMessageText);
+        String branchCode = (String) RequestContextHolder.currentRequestAttributes().getAttribute("branchCode", WebRequest.SCOPE_REQUEST);
+
+        long nonce = snowFlakeUIDGenerator.get();
+        NewFollowerEntity newFollowerEntity = new NewFollowerEntity(nonce, branchCode, event.getSource().getUserId());
+        newFollowerTemporaryStorage.put(nonce, newFollowerEntity);
+
+        List<Action> actionList = new ArrayList<Action>();
+        actionList.add(new URIAction("Sign Up", new URI(String.format("https://login-starter.herokuapp.com/signup?nonce=%d", nonce)), null));
+        Template template = new ButtonsTemplate(null, "Sign Up", "Please click below button to connect service notifications", actionList);
+
+        return new TemplateMessage("Sign Up", template);
+    }
+
+    @EventMapping
+    public Message handleFollowEvent(FollowEvent event) throws URISyntaxException {
+        log.info("event: " + event);
+
+        String branchCode = (String) RequestContextHolder.currentRequestAttributes().getAttribute("branchCode", WebRequest.SCOPE_REQUEST);
+
+        long nonce = snowFlakeUIDGenerator.get();
+        NewFollowerEntity newFollowerEntity = new NewFollowerEntity(nonce, branchCode, event.getSource().getUserId());
+
+        List<Action> actionList = new ArrayList<Action>();
+        actionList.add(new URIAction("Sign Up", new URI(String.format("https://login-starter.herokuapp.com/signup?nonce=%d", nonce)), null));
+        Template template = new ButtonsTemplate(null, "Sign Up", "Please click below button to sign up with our booking service notifications", actionList);
+
+        return new TemplateMessage("Sign Up", template);
+    }
+
+    @EventMapping
+    public Message handleUnfollowEvent(UnfollowEvent event) {
+        log.info("event: " + event);
+        return new TextMessage("Got unfollowed event");
     }
 
     @EventMapping
