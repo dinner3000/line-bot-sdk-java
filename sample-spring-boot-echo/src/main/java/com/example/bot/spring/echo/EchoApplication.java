@@ -18,28 +18,24 @@ package com.example.bot.spring.echo;
 
 import com.linecorp.bot.model.action.Action;
 import com.linecorp.bot.model.action.URIAction;
-import com.linecorp.bot.model.event.FollowEvent;
-import com.linecorp.bot.model.event.UnfollowEvent;
-import com.linecorp.bot.model.message.TemplateMessage;
-import com.linecorp.bot.model.message.flex.component.Button;
-import com.linecorp.bot.model.message.template.ButtonsTemplate;
-import com.linecorp.bot.model.message.template.Template;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-
 import com.linecorp.bot.model.event.Event;
+import com.linecorp.bot.model.event.FollowEvent;
 import com.linecorp.bot.model.event.MessageEvent;
+import com.linecorp.bot.model.event.UnfollowEvent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
 import com.linecorp.bot.model.message.Message;
+import com.linecorp.bot.model.message.TemplateMessage;
 import com.linecorp.bot.model.message.TextMessage;
+import com.linecorp.bot.model.message.template.ButtonsTemplate;
+import com.linecorp.bot.model.message.template.Template;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.util.UriBuilder;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -86,7 +82,7 @@ public class EchoApplication {
     @EventMapping
     public Message handleFollowEvent(FollowEvent event) throws URISyntaxException {
         log.info("event: " + event);
-        
+
         String branchCode = (String) RequestContextHolder.currentRequestAttributes().getAttribute("branchCode", WebRequest.SCOPE_REQUEST);
 
         long nonce = snowFlakeUIDGenerator.get();

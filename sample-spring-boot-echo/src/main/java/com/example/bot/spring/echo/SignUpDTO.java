@@ -1,11 +1,7 @@
 package com.example.bot.spring.echo;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.ToString;
-
-import java.io.Serializable;
 
 @Data
 @ToString

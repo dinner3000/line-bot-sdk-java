@@ -16,20 +16,17 @@
 
 package com.linecorp.bot.spring.boot;
 
-import java.net.URI;
-
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.validation.annotation.Validated;
-
 import com.linecorp.bot.client.LineClientConstants;
 import com.linecorp.bot.spring.boot.BotPropertiesValidator.ValidBotProperties;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
-
 import lombok.Data;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.validation.annotation.Validated;
+
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import java.net.URI;
 
 @Data
 @Validated

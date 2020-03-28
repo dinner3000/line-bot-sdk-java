@@ -1,7 +1,6 @@
 package com.example.bot.spring.echo;
 
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 @Component
 public class NewFollowerTemporaryStorage {

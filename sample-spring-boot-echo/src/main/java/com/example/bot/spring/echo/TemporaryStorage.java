@@ -1,6 +1,5 @@
 package com.example.bot.spring.echo;
 
-import lombok.Getter;
 import org.ehcache.Cache;
 import org.ehcache.CacheManager;
 import org.ehcache.config.builders.CacheConfigurationBuilder;
@@ -8,12 +7,8 @@ import org.ehcache.config.builders.CacheManagerBuilder;
 import org.ehcache.config.builders.ExpiryPolicyBuilder;
 import org.ehcache.config.builders.ResourcePoolsBuilder;
 import org.springframework.beans.factory.DisposableBean;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.GenericTypeResolver;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Type;
 import java.time.Duration;
 
 @Component

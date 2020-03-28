@@ -16,18 +16,13 @@
 
 package com.linecorp.bot.spring.boot.support;
 
-import static java.util.Collections.singletonList;
-import static java.util.concurrent.CompletableFuture.completedFuture;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.only;
-import static org.mockito.Mockito.reset;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.util.List;
-import java.util.concurrent.CompletableFuture;
-
+import com.linecorp.bot.client.LineMessagingClient;
+import com.linecorp.bot.client.exception.GeneralLineMessagingException;
+import com.linecorp.bot.model.ReplyMessage;
+import com.linecorp.bot.model.event.MessageEvent;
+import com.linecorp.bot.model.message.TextMessage;
+import com.linecorp.bot.model.response.BotApiResponse;
+import com.linecorp.bot.spring.boot.test.EventTestUtil;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -38,13 +33,14 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
-import com.linecorp.bot.client.LineMessagingClient;
-import com.linecorp.bot.client.exception.GeneralLineMessagingException;
-import com.linecorp.bot.model.ReplyMessage;
-import com.linecorp.bot.model.event.MessageEvent;
-import com.linecorp.bot.model.message.TextMessage;
-import com.linecorp.bot.model.response.BotApiResponse;
-import com.linecorp.bot.spring.boot.test.EventTestUtil;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+
+import static java.util.Collections.singletonList;
+import static java.util.concurrent.CompletableFuture.completedFuture;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
 public class ReplyByReturnValueConsumerTest {
     private static final MessageEvent EVENT = EventTestUtil.createTextMessage("text");

@@ -16,11 +16,13 @@
 
 package com.linecorp.bot.spring.boot.interceptor;
 
-import java.io.PrintWriter;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.linecorp.bot.model.event.CallbackRequest;
+import com.linecorp.bot.parser.WebhookParseException;
+import com.linecorp.bot.parser.WebhookParser;
+import com.linecorp.bot.spring.boot.annotation.LineBotMessages;
+import com.linecorp.bot.spring.boot.support.LineBotServerArgumentProcessor;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpStatus;
@@ -30,14 +32,9 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.linecorp.bot.model.event.CallbackRequest;
-import com.linecorp.bot.parser.WebhookParseException;
-import com.linecorp.bot.parser.WebhookParser;
-import com.linecorp.bot.spring.boot.annotation.LineBotMessages;
-import com.linecorp.bot.spring.boot.support.LineBotServerArgumentProcessor;
-
-import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.PrintWriter;
 
 @Component
 @Slf4j

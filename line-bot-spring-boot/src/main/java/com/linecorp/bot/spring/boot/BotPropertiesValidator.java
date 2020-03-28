@@ -16,19 +16,18 @@
 
 package com.linecorp.bot.spring.boot;
 
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
-
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
+import com.linecorp.bot.spring.boot.BotPropertiesValidator.ValidBotProperties;
 
 import javax.validation.Constraint;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import javax.validation.Payload;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
 
-import com.linecorp.bot.spring.boot.BotPropertiesValidator.ValidBotProperties;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 public class BotPropertiesValidator implements ConstraintValidator<ValidBotProperties, LineBotProperties> {
     @Target({ ElementType.TYPE })

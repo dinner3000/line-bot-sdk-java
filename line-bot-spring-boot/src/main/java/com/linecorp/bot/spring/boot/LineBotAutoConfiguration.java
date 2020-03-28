@@ -16,6 +16,8 @@
 
 package com.linecorp.bot.spring.boot;
 
+import com.linecorp.bot.client.*;
+import com.linecorp.bot.spring.boot.support.LineMessageHandlerSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -23,14 +25,6 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-
-import com.linecorp.bot.client.ChannelManagementSyncClient;
-import com.linecorp.bot.client.ChannelTokenSupplier;
-import com.linecorp.bot.client.FixedChannelTokenSupplier;
-import com.linecorp.bot.client.LineBlobClient;
-import com.linecorp.bot.client.LineMessagingClient;
-import com.linecorp.bot.client.ManageAudienceClient;
-import com.linecorp.bot.spring.boot.support.LineMessageHandlerSupport;
 
 /**
  * Also refers {@link LineBotWebMvcBeans} for web only beans definition.
