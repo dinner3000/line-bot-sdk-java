@@ -86,15 +86,16 @@ public class EchoApplication {
     @EventMapping
     public Message handleFollowEvent(FollowEvent event) throws URISyntaxException {
         log.info("event: " + event);
-
+        
         String branchCode = (String) RequestContextHolder.currentRequestAttributes().getAttribute("branchCode", WebRequest.SCOPE_REQUEST);
 
         long nonce = snowFlakeUIDGenerator.get();
         NewFollowerEntity newFollowerEntity = new NewFollowerEntity(nonce, branchCode, event.getSource().getUserId());
+        newFollowerTemporaryStorage.put(nonce, newFollowerEntity);
 
         List<Action> actionList = new ArrayList<Action>();
         actionList.add(new URIAction("Sign Up", new URI(String.format("https://login-starter.herokuapp.com/signup?nonce=%d", nonce)), null));
-        Template template = new ButtonsTemplate(null, "Sign Up", "Please click below button to sign up with our booking service notifications", actionList);
+        Template template = new ButtonsTemplate(null, "Sign Up", "Please click below button to connect service notifications", actionList);
 
         return new TemplateMessage("Sign Up", template);
     }
